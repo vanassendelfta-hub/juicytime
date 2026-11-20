@@ -1,0 +1,202 @@
+<!doctype html>
+<html lang="nl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Juicy Time · Cocktails to go in Rotterdam</title>
+  <meta name="description" content="Bestel je cocktails to go bij Juicy Time. Ophalen of laten bezorgen in Rotterdam en omgeving. 1 voor €4,50, 3 voor €10.">
+  <meta name="theme-color" content="#FFF4C2">
+  <meta property="og:title" content="Juicy Time · Cocktails to go">
+  <meta property="og:description" content="(Huis)feestje? Bestel je cocktails! Ophalen en bezorgen in Rotterdam en omgeving.">
+  <meta property="og:image" content="/img/logo.webp">
+  <link rel="icon" type="image/webp" href="/img/logo.webp">
+  <link rel="apple-touch-icon" href="/img/logo.webp">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Gochi+Hand&family=Londrina+Solid:wght@400;900&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <a class="skip" href="#menu">Naar het menu</a>
+
+  <header class="topbar">
+    <a href="#top" class="brand" aria-label="Juicy Time, naar boven">
+      <img src="/img/logo.webp" alt="" width="44" height="44">
+      <span>Juicy Time</span>
+    </a>
+    <nav class="topnav" aria-label="Hoofdmenu">
+      <a href="#menu">Menu</a>
+      <a href="#hoe">Hoe werkt het</a>
+      <a href="#feest">Feestje</a>
+    </nav>
+    <button class="cart-btn" type="button" data-open-cart aria-label="Open je bestelling">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6h15l-1.5 9h-12z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M6 6 5 3H2" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><circle cx="9" cy="20" r="1.6" fill="currentColor"/><circle cx="18" cy="20" r="1.6" fill="currentColor"/></svg>
+      <span class="cart-count" data-cart-count>0</span>
+    </button>
+  </header>
+
+  <main id="top">
+    <section class="hero">
+      <div class="wave-bg" aria-hidden="true"></div>
+      <div class="hero-inner">
+        <div class="hero-copy">
+          <p class="kicker">☀️ Cocktails to go</p>
+          <h1>(Huis)feestje?<br><span>Bestel je cocktails!</span></h1>
+          <p class="lead">Vers gemixt, in een handige 200 ml pouch. Ophalen of laten bezorgen in Rotterdam en omgeving.</p>
+          <div class="deal-row">
+            <div class="deal"><strong>€4,50</strong><span>voor 1</span></div>
+            <div class="deal deal-hot"><strong>€10</strong><span>voor 3</span></div>
+          </div>
+          <div class="hero-cta">
+            <a class="btn btn-primary" href="#menu">Kies je cocktails</a>
+            <a class="btn btn-ghost" href="#feest">20+ voor een feest?</a>
+          </div>
+        </div>
+        <div class="hero-art">
+          <img src="/img/logo.webp" alt="Juicy Time logo: drie handen die proosten met cocktails" width="842" height="842">
+        </div>
+      </div>
+    </section>
+
+    <section id="menu" class="menu" aria-labelledby="menu-title">
+      <div class="section-head">
+        <h2 id="menu-title">Het menu</h2>
+        <p>Mix en match zoals je wilt. Elke 3 cocktails betaal je €10, de korting rekenen we automatisch.</p>
+      </div>
+      <div class="menu-grid" data-menu></div>
+    </section>
+
+    <section id="hoe" class="how" aria-labelledby="how-title">
+      <div class="how-inner">
+        <div class="how-photo">
+          <img src="/img/foto-pouches.webp" alt="Juicy Time pouches: Sex on the beach en Pornstar martini" loading="lazy" width="842" height="842">
+        </div>
+        <div>
+          <h2 id="how-title">Zo werkt het</h2>
+          <ol class="steps">
+            <li><span class="step-n">1</span><div><strong>Kies je cocktails</strong><p>Stel je mix samen. Bij 3 stuks betaal je €10.</p></div></li>
+            <li><span class="step-n">2</span><div><strong>Ophalen of bezorgen</strong><p>Kies een dag en tijd. We bezorgen in Rotterdam en omgeving.</p></div></li>
+            <li><span class="step-n">3</span><div><strong>We bevestigen</strong><p>Je krijgt een bevestiging met het betaalverzoek.</p></div></li>
+            <li><span class="step-n">4</span><div><strong>Proost! 🥂</strong><p>Goed koud bewaren en schudden voor gebruik.</p></div></li>
+          </ol>
+        </div>
+      </div>
+    </section>
+
+    <section id="feest" class="party" aria-labelledby="party-title">
+      <div class="party-card">
+        <p class="kicker">🪩 Ook voor feestjes</p>
+        <h2 id="party-title">20+ cocktails? Prijs bespreekbaar!</h2>
+        <p>Verjaardag, borrel, vrijgezellenfeest of bedrijfsuitje: vraag een prijs op maat aan. We denken mee over aantallen en smaken.</p>
+        <button class="btn btn-primary" type="button" data-party>Vraag een feestprijs aan</button>
+      </div>
+      <img class="party-photo" src="/img/foto-mand.webp" alt="Mand vol Juicy Time cocktails" loading="lazy" width="842" height="842">
+    </section>
+  </main>
+
+  <footer class="footer">
+    <img src="/img/logo.webp" alt="" width="64" height="64">
+    <p><strong>Juicy Time</strong> · Cocktails to go · Rotterdam en omgeving</p>
+    <p><a href="https://www.instagram.com/jjuicytime/" target="_blank" rel="noopener">@jjuicytime op Instagram</a></p>
+    <p class="nix">🔞 Geen 18, geen alcohol. Bij ophalen en bezorgen vragen we om je ID.</p>
+  </footer>
+
+  <!-- Bestelling (zijpaneel) -->
+  <div class="drawer-backdrop" data-close-cart hidden></div>
+  <aside class="drawer" id="cart" aria-labelledby="cart-title" aria-hidden="true">
+    <div class="drawer-head">
+      <h2 id="cart-title">Je bestelling</h2>
+      <button class="icon-btn" type="button" data-close-cart aria-label="Sluiten">✕</button>
+    </div>
+    <div class="drawer-body">
+      <div data-cart-lines></div>
+      <p class="empty" data-cart-empty>Nog niks gekozen. Tik op <strong>+</strong> bij een cocktail.</p>
+
+      <div class="totals" data-totals hidden>
+        <div class="row"><span>Cocktails</span><span data-t-count>0</span></div>
+        <div class="row muted" data-t-deal-row hidden><span>Korting 3 voor €10</span><span data-t-deal>-€0,00</span></div>
+        <div class="row" data-t-delivery-row hidden><span>Bezorging</span><span data-t-delivery>in overleg</span></div>
+        <div class="row total"><span>Totaal</span><span data-t-total>€0,00</span></div>
+        <p class="bulk-note" data-bulk-note hidden>🎉 20+ cocktails: we nemen contact op met een prijs op maat. Het totaal hierboven is de standaardprijs.</p>
+        <p class="nudge" data-nudge hidden></p>
+      </div>
+
+      <form class="order-form" data-form novalidate hidden>
+        <fieldset class="seg">
+          <legend>Hoe wil je het ontvangen?</legend>
+          <label><input type="radio" name="method" value="ophalen" checked> <span>Ophalen</span></label>
+          <label><input type="radio" name="method" value="bezorgen"> <span>Bezorgen</span></label>
+        </fieldset>
+
+        <div class="grid2">
+          <label class="field">Datum
+            <input type="date" name="date" required>
+          </label>
+          <label class="field">Tijd
+            <select name="time" required></select>
+          </label>
+        </div>
+
+        <label class="field">Naam
+          <input type="text" name="name" autocomplete="name" required>
+        </label>
+        <div class="grid2">
+          <label class="field">Telefoon
+            <input type="tel" name="phone" autocomplete="tel" inputmode="tel" required placeholder="06 12345678">
+          </label>
+          <label class="field">E-mail <span class="opt">(optioneel)</span>
+            <input type="email" name="email" autocomplete="email">
+          </label>
+        </div>
+
+        <div class="delivery-fields" data-delivery hidden>
+          <label class="field">Straat en huisnummer
+            <input type="text" name="street" autocomplete="street-address">
+          </label>
+          <div class="grid2">
+            <label class="field">Postcode
+              <input type="text" name="postcode" autocomplete="postal-code" placeholder="3011 AB">
+            </label>
+            <label class="field">Plaats
+              <input type="text" name="city" autocomplete="address-level2" value="Rotterdam">
+            </label>
+          </div>
+        </div>
+
+        <label class="field">Opmerking <span class="opt">(optioneel)</span>
+          <textarea name="note" rows="2" placeholder="Bijv. extra koud, feestje voor 25 man…"></textarea>
+        </label>
+
+        <label class="check">
+          <input type="checkbox" name="age" required>
+          <span>Ik ben 18 jaar of ouder en laat mijn ID zien bij ophalen of bezorgen.</span>
+        </label>
+
+        <p class="form-error" data-form-error role="alert" hidden></p>
+        <button class="btn btn-primary btn-block" type="submit" data-submit>Bestelling plaatsen</button>
+        <p class="fineprint">Je betaalt na bevestiging via een betaalverzoek. Bezorgkosten spreken we samen af.</p>
+      </form>
+    </div>
+  </aside>
+
+  <!-- Bevestiging -->
+  <div class="modal" data-modal hidden role="dialog" aria-modal="true" aria-labelledby="done-title">
+    <div class="modal-card">
+      <img src="/img/logo.webp" alt="" width="96" height="96">
+      <h2 id="done-title">Bijna klaar! 🥂</h2>
+      <p data-done-text></p>
+      <pre class="summary" data-summary></pre>
+      <div class="send-btns" data-send-btns></div>
+      <button class="btn btn-ghost btn-block" type="button" data-close-modal>Sluiten</button>
+    </div>
+  </div>
+
+  <div class="mobile-bar" data-mobile-bar hidden>
+    <button class="btn btn-primary btn-block" type="button" data-open-cart>
+      Bekijk bestelling · <span data-mb-count>0</span> · <span data-mb-total>€0,00</span>
+    </button>
+  </div>
+
+  <script src="/app.js" defer></script>
+</body>
+</html>

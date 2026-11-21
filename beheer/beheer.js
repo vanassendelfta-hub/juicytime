@@ -44,7 +44,7 @@
     if (!t) return null;
     var n = Number(t); return isFinite(n) && n >= 0 && n < 100000 ? Math.round(n * 100) / 100 : NaN;
   }
-  function slugVan(t) { return String(t).toLowerCase().normalize('NFKD').replace(/[̀-ͯ]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '').slice(0, 30) || 'item'; }
+  function slugVan(t) { return String(t).toLowerCase().normalize('NFKD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '').slice(0, 30) || 'item'; }
   function datum(d) { try { return new Date(d).toLocaleString('nl-NL', { weekday: 'short', day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' }); } catch (e) { return ''; } }
   function toast(t, fout) {
     var n = el('div', { class: 'toast' + (fout ? ' fout' : ''), role: 'status', text: t });

@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#FFF4C2">
+<title>Beheer · Juicy Time</title>
+<link rel="icon" type="image/webp" href="/img/logo.webp">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Londrina+Solid:wght@400;900&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--butter:#FFF4C2;--butter-2:#FBE58A;--cream:#FFFCEB;--ink:#2E2A55;--soft:#5B5788;--violet:#6F6BD8;--violet-d:#5652C2;--coral:#FF6B3D;--line:#EEE3B0;--groen:#1E9E5A;--rood:#D03A2B}
+*{box-sizing:border-box}[hidden]{display:none!important}
+body{margin:0;font-family:'Nunito',system-ui,sans-serif;color:var(--ink);background:var(--cream);line-height:1.5;-webkit-font-smoothing:antialiased;font-size:16px}
+h1,h2{font-family:'Londrina Solid','Nunito',sans-serif;font-weight:900;color:var(--violet);margin:0;line-height:1.05;letter-spacing:.01em}
+h1{font-size:2rem}h2{font-size:1.5rem}
+.top{position:sticky;top:0;z-index:10;background:var(--butter);border-bottom:2px solid var(--butter-2);padding:10px 16px;display:flex;align-items:center;gap:10px}
+.top img{width:40px;height:40px;border-radius:50%}
+.top b{font-family:'Londrina Solid',sans-serif;font-size:1.35rem;color:var(--violet);flex:1;line-height:1}
+.top b small{display:block;font:700 .72rem 'Nunito',sans-serif;color:var(--soft);letter-spacing:.08em;text-transform:uppercase;margin-top:2px}
+.wrap{max-width:760px;margin:0 auto;padding:18px 16px calc(40px + env(safe-area-inset-bottom))}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:0;border-radius:999px;padding:12px 18px;font:800 1rem 'Nunito',sans-serif;cursor:pointer;text-decoration:none;min-height:46px}
+.btn-p{background:var(--violet);color:#fff;box-shadow:0 5px 0 var(--violet-d)}
+.btn-g{background:#fff;color:var(--ink);border:2px solid var(--line)}
+.btn-t{background:none;color:var(--soft);padding:10px 8px;min-height:40px;font-weight:700}
+.btn-k{padding:8px 14px;min-height:40px;font-size:.95rem}
+.btn:disabled{opacity:.6;cursor:wait}
+.btn:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px solid var(--violet);outline-offset:2px}
+label{display:block;font-weight:800;font-size:.9rem;margin:0 0 6px}
+input,textarea{width:100%;padding:12px 14px;border-radius:14px;border:2px solid var(--line);background:#fff;color:var(--ink);font:400 16px 'Nunito',sans-serif}
+textarea{min-height:70px;resize:vertical}
+.veld{margin-bottom:14px}
+.kaart{background:#fff;border:2px solid var(--line);border-radius:22px;padding:18px;box-shadow:0 10px 30px -18px rgba(46,42,85,.3)}
+.login{max-width:420px;margin:8vh auto 0}
+.login img{width:92px;height:92px;border-radius:50%;display:block;margin:0 auto 12px}
+.login h1{text-align:center;margin-bottom:4px}.login p.s{text-align:center;color:var(--soft);margin:0 0 18px}
+.ww{position:relative}.ww input{padding-right:74px}.ww button{position:absolute;right:6px;top:50%;transform:translateY(-50%);background:none;border:0;color:var(--violet);font:800 .9rem 'Nunito',sans-serif;padding:8px;cursor:pointer}
+.fout{background:#FDE7E3;border:2px solid #F3B6AD;color:#8E2418;border-radius:14px;padding:10px 14px;margin-bottom:14px;font-weight:600}
+.tegels{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:16px 0}
+.tegel{background:#fff;border:2px solid var(--line);border-radius:18px;padding:12px 14px}
+.tegel b{display:block;font-family:'Londrina Solid',sans-serif;font-size:1.9rem;line-height:1;color:var(--ink)}
+.tegel span{font-size:.82rem;color:var(--soft);font-weight:700}
+.tegel.nieuw{background:var(--violet);border-color:var(--violet-d)}.tegel.nieuw b,.tegel.nieuw span{color:#fff}
+.chips{display:flex;gap:8px;margin:0 0 14px;overflow-x:auto;scrollbar-width:none}.chips::-webkit-scrollbar{display:none}
+.chip{flex:none;border:2px solid var(--line);background:#fff;color:var(--soft);border-radius:999px;padding:9px 16px;font:800 .95rem 'Nunito',sans-serif;cursor:pointer}
+.chip.aan{background:var(--ink);border-color:var(--ink);color:#fff}
+.best{margin-bottom:12px;padding:16px}
+.best.nieuw{border-color:var(--violet);box-shadow:0 0 0 3px rgba(111,107,216,.18)}
+.bk{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}
+.bk b{font-size:1.12rem;font-weight:800;display:block;line-height:1.2}.bk small{color:var(--soft);font-weight:700}
+.pil{flex:none;font-size:.8rem;font-weight:800;padding:4px 11px;border-radius:999px;background:#EEEDFB;color:var(--violet-d);white-space:nowrap}
+.pil.Nieuw{background:var(--coral);color:#fff}.pil.Bevestigd{background:#EEEDFB;color:var(--violet-d)}.pil.Klaar{background:#DDF5E7;color:#146C3D}.pil.Afgerond{background:#EFEDE0;color:#6B6748}.pil.Geannuleerd{background:#FDE7E3;color:#8E2418}
+.wanneer{display:flex;gap:8px;align-items:center;margin:10px 0;padding:10px 12px;background:var(--butter);border-radius:14px;font-weight:800}
+.wanneer span{font-weight:600;color:var(--soft)}
+.regels{list-style:none;margin:0 0 8px;padding:0}.regels li{display:flex;gap:8px;padding:3px 0}.regels li b{min-width:34px;color:var(--violet-d)}
+.totaal{display:flex;justify-content:space-between;border-top:2px dashed var(--line);padding-top:8px;font-weight:800;font-size:1.05rem}
+.extra{margin:8px 0 0;color:var(--soft);font-size:.95rem}.extra b{color:var(--ink)}
+.acties{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}.acties .btn-p{flex:1 1 180px}
+.leeg{text-align:center;color:var(--soft);border:2px dashed var(--line);border-radius:22px;padding:30px 18px}.leeg b{display:block;color:var(--ink);font-size:1.1rem;margin-bottom:4px}
+.sectie{margin-top:30px}.sectie h2{margin-bottom:6px}.sectie p.s{color:var(--soft);margin:0 0 14px}
+.schakel{display:flex;gap:10px;align-items:center;font-weight:700;margin:0 0 14px;cursor:pointer}.schakel input{width:22px;height:22px;accent-color:var(--violet);flex:none}
+.toast{position:fixed;left:50%;bottom:calc(18px + env(safe-area-inset-bottom));transform:translateX(-50%);background:var(--ink);color:#fff;border-radius:14px;padding:12px 18px;font-weight:700;z-index:50;max-width:calc(100vw - 24px);box-shadow:0 14px 30px -12px rgba(0,0,0,.5)}
+.toast.f{background:var(--rood)}
+.bij{font-size:.85rem;color:var(--soft);text-align:center;margin:16px 0 0}
+@media(max-width:420px){.tegels{gap:8px}.tegel{padding:10px}.tegel b{font-size:1.6rem}}
+</style>
+</head>
+<body>
+<header class="top"><img src="/img/logo.webp" alt=""><b>Juicy Time<small>Beheer</small></b><button class="btn btn-g btn-k" id="uit" type="button" hidden>Uitloggen</button></header>
+
+<main class="wrap">
+  <section class="login kaart" id="login" hidden>
+    <img src="/img/logo.webp" alt="">
+    <h1>Inloggen</h1><p class="s">Bekijk en verwerk je bestellingen.</p>
+    <div class="fout" id="lfout" role="alert" hidden></div>
+    <form id="lform" novalidate>
+      <div class="veld"><label for="lu">Gebruikersnaam</label><input id="lu" autocomplete="username" autocapitalize="none" autocorrect="off" spellcheck="false" required></div>
+      <div class="veld"><label for="lp">Wachtwoord</label><div class="ww"><input id="lp" type="password" autocomplete="current-password" required><button type="button" id="toon">Toon</button></div></div>
+      <button class="btn btn-p" style="width:100%" id="lknop" type="submit">Inloggen</button>
+    </form>
+    <p class="bij">Wachtwoord kwijt? Neem contact op met Flowsmid.</p>
+  </section>
+
+  <section id="app" hidden>
+    <h1>Bestellingen</h1>
+    <div class="tegels"><div class="tegel nieuw"><b id="tNieuw">0</b><span>Nieuw</span></div><div class="tegel"><b id="tVandaag">0</b><span>Vandaag</span></div><div class="tegel"><b id="tOpen">0</b><span>Nog te doen</span></div></div>
+    <div class="chips" role="tablist"><button class="chip aan" data-f="open" type="button">Nog te doen</button><button class="chip" data-f="vandaag" type="button">Vandaag</button><button class="chip" data-f="alles" type="button">Alles</button></div>
+    <div id="lijst"></div>
+    <p class="bij" id="bij"></p>
+
+    <div class="sectie">
+      <h2>Melding per e-mail</h2>
+      <p class="s">Vul je e-mailadres in, bijvoorbeeld je Gmail. Dan krijg je bij elke nieuwe bestelling een mail.</p>
+      <div class="kaart">
+        <div class="veld"><label for="mEmail">E-mailadres</label><input id="mEmail" type="email" autocomplete="email" autocapitalize="none" placeholder="jij@gmail.com"></div>
+        <label class="schakel"><input type="checkbox" id="mAan"> Stuur mij een mail bij elke nieuwe bestelling</label>
+        <button class="btn btn-p btn-k" id="mOpslaan" type="button">Opslaan</button>
+      </div>
+    </div>
+  </section>
+</main>
+<div class="toast" id="toast" hidden></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.58.0/dist/umd/supabase.js" integrity="sha384-KX6Y/AMIv9qA8TLCDul2JatZWeyrJVgj3Xu/0r30Nr05xO8md1+wHAgtdsRV9LoE" crossorigin="anonymous"></script>
+<script src="/beheer/beheer.js"></script>
+</body>
+</html>

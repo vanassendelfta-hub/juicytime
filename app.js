@@ -9,6 +9,7 @@ const CONFIG = {
   whatsapp: '',              // bijv. '31612345678' (zonder + en zonder spaties). Leeg = verborgen.
   email: '',                 // optioneel: bestellingen ook via mail
   orderEndpoint: '',         // optioneel: URL die de bestelling als JSON ontvangt (POST)
+  orderSlug: 'juicytime',    // bestellingen komen in het beheer (/beheer). Leeg = alleen als bericht versturen.
   priceSingle: 4.5,
   priceTrio: 10,
   bulkThreshold: 20,         // vanaf dit aantal: prijs bespreekbaar
@@ -17,6 +18,12 @@ const CONFIG = {
   slotEnd: '22:00',
   slotMinutes: 30,
   leadMinutes: 60,           // minimaal zoveel minuten van tevoren bestellen
+};
+
+/* Openbare gegevens van de database waar bestellingen in komen (alleen plaatsen, niet lezen). */
+const BEHEER = {
+  url: 'https://uywydquzvdbpfjjrwsbt.supabase.co',
+  key: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InV5d3lkcXV6dmRicGZqanJ3c2J0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTEzMTI5NDEsImV4cCI6MjEwNjg4ODk0MX0.4C76JwtfcRx3d39kvU23NRpKPKt_A5FkmdUpoqDbf5M',
 };
 
 const MENU = [
@@ -288,6 +295,8 @@ function showDone(o, text, posted) {
     ig.textContent = ok ? 'Gekopieerd! Plak het in de chat ✨' : 'Kopieer de tekst hierboven';
     window.open(`https://ig.me/m/${CONFIG.instagram}`, '_blank', 'noopener');
   });
+  const kop = document.querySelector('[data-modal] h2');
+  if (kop) kop.textContent = posted ? 'Bestelling ontvangen! 🥂' : 'Bijna klaar! 🥂';
   $('[data-modal]').hidden = false;
   document.body.classList.add('lock');
 }
@@ -300,9 +309,25 @@ async function submit(e) {
   if (errs.length) { err.textContent = errs.join(' '); err.hidden = false; return; }
   err.hidden = true;
   const o = buildOrder(f);
-  const text = orderText(o);
   let posted = false;
-  if (CONFIG.orderEndpoint) {
+  if (CONFIG.orderSlug) {
+    const btn = $('[data-submit]'); const label = btn.textContent; btn.disabled = true; btn.textContent = 'Versturen…';
+    try {
+      const res = await fetch(`${BEHEER.url}/rest/v1/rpc/bestelling_plaatsen`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Content-Profile': 'flowsmid', apikey: BEHEER.key, Authorization: `Bearer ${BEHEER.key}` },
+        body: JSON.stringify({ p_slug: CONFIG.orderSlug, p: { ...o, website: f.elements.website ? f.elements.website.value : '' } }),
+      });
+      if (res.ok) { const nr = await res.json(); if (typeof nr === 'string' && nr.length > 2 && nr !== 'OK') o.id = nr; posted = true; }
+      else if (res.status === 400) {      // de server keurt iets af: laat zien wat, en houd de bestelling vast
+        const j = await res.json().catch(() => ({}));
+        btn.disabled = false; btn.textContent = label;
+        err.textContent = j.message || 'Er klopt iets niet in je bestelling. Controleer je gegevens.'; err.hidden = false;
+        return;
+      }
+    } catch { posted = false; }           // geen verbinding: dan versturen als bericht, zoals voorheen
+    btn.disabled = false; btn.textContent = label;
+  } else if (CONFIG.orderEndpoint) {
     const btn = $('[data-submit]'); btn.disabled = true; btn.textContent = 'Versturen…';
     try {
       const res = await fetch(CONFIG.orderEndpoint, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(o) });
@@ -310,6 +335,7 @@ async function submit(e) {
     } catch { posted = false; }
     btn.disabled = false;
   }
+  const text = orderText(o);
   store.set('jt_customer', { name: o.customer.name, phone: o.customer.phone, email: o.customer.email });
   closeCart();
   showDone(o, text, posted);

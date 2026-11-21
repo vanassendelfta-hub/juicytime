@@ -356,3 +356,54 @@ $('[data-form]').addEventListener('submit', submit);
   if (c) { const f = $('[data-form]'); f.elements.name.value = c.name || ''; f.elements.phone.value = c.phone || ''; f.elements.email.value = c.email || ''; }
   render();
 })();
+
+/* ---------- intro ---------- */
+(function intro() {
+  const root = document.documentElement;
+  const el = document.getElementById('intro');
+  if (!el || !root.classList.contains('intro-on')) return;
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const phases = ['s1', 's2', 's3', 's4'];
+  let timers = [], shown = false, gone = false;
+  const rest = [document.querySelector('.topbar'), document.querySelector('main'), document.querySelector('.footer')];
+  rest.forEach((n) => { if (n) n.inert = true; });
+
+  function finish() {           // spring naar het eindbeeld met de knoppen
+    if (shown) return; shown = true;
+    timers.forEach(clearTimeout);
+    el.classList.add(...phases);
+    const b = el.querySelector('[data-intro-go="menu"]');
+    if (b) setTimeout(() => b.focus({ preventScroll: true }), reduce ? 0 : 500);
+  }
+  function remove(target) {
+    el.remove();
+    rest.forEach((n) => { if (n) n.inert = false; });
+    root.classList.remove('intro-on');
+    if (target === 'menu') document.getElementById('menu').scrollIntoView({ behavior: 'instant', block: 'start' });
+    else scrollTo({ top: 0, behavior: 'instant' });
+  }
+  function leave(target) {
+    if (gone) return; gone = true;
+    finish();
+    try { sessionStorage.setItem('jt_intro', '1'); } catch (e) { /* ignore */ }
+    if (reduce) { remove(target); root.classList.remove('intro-leaving'); return; }
+    root.classList.add('intro-leaving');
+    setTimeout(() => remove(target), 820);          // scherm is nu helemaal bedekt
+    setTimeout(() => { root.classList.remove('intro-leaving'); const p = document.getElementById('introPour'); if (p) p.remove(); }, 1800);
+  }
+
+  if (reduce) finish();
+  else [[150, 's1'], [2300, 's2'], [3500, 's3'], [4300, 's4']].forEach(([t, c]) =>
+    timers.push(setTimeout(() => { el.classList.add(c); if (c === 's4') finish(); }, t)));
+
+  el.addEventListener('click', (e) => {
+    const go = e.target.closest('[data-intro-go]');
+    if (go) return leave(go.dataset.introGo);
+    if (e.target.closest('[data-intro-skip]')) finish();
+  });
+  addEventListener('keydown', (e) => {
+    if (gone) return;
+    if (!shown && (e.key === 'Escape' || e.key === ' ' || e.key === 'Enter')) { e.preventDefault(); finish(); }
+    else if (shown && e.key === 'Escape') leave('top');
+  });
+})();

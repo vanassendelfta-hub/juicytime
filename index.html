@@ -14,9 +14,46 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Gochi+Hand&family=Londrina+Solid:wght@400;900&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <script>
+    /* Intro alleen bij binnenkomst (één keer per bezoek). ?intro=1 toont hem altijd. */
+    (function(){var s=false;try{s=sessionStorage.getItem('jt_intro')==='1';}catch(e){}
+    if(!s||/[?&]intro=1/.test(location.search))document.documentElement.classList.add('intro-on');})();
+  </script>
+  <link rel="preload" as="image" href="/img/logo.webp">
   <link rel="stylesheet" href="/styles.css">
 </head>
 <body>
+  <!-- Intro -->
+  <div class="intro" id="intro" role="dialog" aria-modal="true" aria-label="Welkom bij Juicy Time">
+    <div class="intro-waves" aria-hidden="true"></div>
+    <div class="intro-bubbles" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+
+    <div class="intro-hello" aria-hidden="true">
+      <span class="ih-big">Cheers!</span>
+      <span class="ih-line"></span>
+      <span class="ih-sub">Proost · Welkom</span>
+    </div>
+
+    <div class="intro-cards" aria-hidden="true">
+      <span class="ic ic1" style="--c:#F49AAE"><img src="/img/juicy-lychee-glas.webp" alt=""></span>
+      <span class="ic ic2" style="--c:#E8433A"><img src="/img/sangria-glas.webp" alt=""></span>
+      <span class="ic ic3" style="--c:#FF6B3D"><img src="/img/sex-on-the-beach-glas.webp" alt=""></span>
+      <span class="ic ic4" style="--c:#F59E1B"><img src="/img/pornstar-martini-glas.webp" alt=""></span>
+    </div>
+
+    <div class="intro-main">
+      <div class="intro-logo"><img src="/img/logo.webp" alt="" width="460" height="460"></div>
+      <p class="intro-brand"><strong>Juicy Time</strong><em>Cocktails to go · Rotterdam</em></p>
+      <p class="intro-deal"><span>€4,50 per stuk</span><span class="hot">3 voor €10</span></p>
+      <div class="intro-btns">
+        <button class="btn btn-primary" type="button" data-intro-go="menu">Bestel nu
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+        <button class="btn btn-ghost" type="button" data-intro-go="top">Bekijk de site</button>
+      </div>
+    </div>
+    <button class="intro-skip" type="button" data-intro-skip>Overslaan</button>
+  </div>
+  <div class="intro-pour" id="introPour" aria-hidden="true"></div>
   <a class="skip" href="#menu">Naar het menu</a>
 
   <header class="topbar">

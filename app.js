@@ -17,6 +17,10 @@ const CONFIG = {
   slotEnd: '22:00',
   slotMinutes: 30,
   leadMinutes: 60,           // minimaal zoveel minuten van tevoren bestellen
+  // Per weekdag (0 = maandag): open, van, tot. Leeg = elke dag slotStart–slotEnd. Wordt overschreven vanuit /beheer.
+  days: null,
+  closed: false,             // tijdelijk gesloten: bestellen kan niet
+  closedText: '',
 };
 
 const MENU = [
@@ -66,23 +70,25 @@ function pricing(n) {
 const method = () => ($('input[name="method"]:checked') || {}).value || 'ophalen';
 
 /* ---------- menu ---------- */
+const esc = (t) => String(t == null ? '' : t).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const shown = () => MENU.filter((m) => !m.hidden);
 function renderMenu() {
-  $('[data-menu]').innerHTML = MENU.map((m) => `
-    <article class="card" style="--accent:${m.color}">
+  $('[data-menu]').innerHTML = shown().map((m) => `
+    <article class="card${m.soldOut ? ' soldout' : ''}" style="--accent:${m.color}">
       <div class="card-img">
-        ${m.tag ? `<span class="tag">${m.tag}</span>` : ''}
-        <img src="${m.img}" alt="${m.name} illustratie" loading="lazy" width="395" height="425">
+        ${m.tag ? `<span class="tag">${esc(m.tag)}</span>` : ''}
+        <img src="${m.img}" alt="${esc(m.name)} illustratie" loading="lazy" width="395" height="425">
       </div>
       <div class="card-body">
-        <h3>${m.name}</h3>
-        <p>${m.desc}</p>
+        <h3>${esc(m.name)}</h3>
+        <p>${esc(m.desc)}</p>
         <div class="card-foot">
           <span class="price">${eur(CONFIG.priceSingle)} <small>· 200 ml</small></span>
-          <div class="qty" data-qty="${m.id}">
-            <button type="button" data-dec="${m.id}" aria-label="Eén ${m.name} minder">−</button>
+          ${m.soldOut ? '<span class="soldout-tag">Uitverkocht</span>' : `<div class="qty" data-qty="${m.id}">
+            <button type="button" data-dec="${m.id}" aria-label="Eén ${esc(m.name)} minder">−</button>
             <output data-q="${m.id}" aria-live="polite">0</output>
-            <button type="button" data-inc="${m.id}" aria-label="Eén ${m.name} erbij">+</button>
-          </div>
+            <button type="button" data-inc="${m.id}" aria-label="Eén ${esc(m.name)} erbij">+</button>
+          </div>`}
         </div>
       </div>
     </article>`).join('');
@@ -90,6 +96,8 @@ function renderMenu() {
 
 /* ---------- cart ---------- */
 function setQty(id, q) {
+  const item = MENU.find((m) => m.id === id);
+  if (!item || item.hidden || (item.soldOut && q > (cart[id] || 0))) return;
   q = Math.max(0, Math.min(500, q | 0));
   if (q === 0) delete cart[id]; else cart[id] = q;
   store.set('jt_cart', cart);
@@ -105,15 +113,15 @@ function render() {
     if (o) { o.textContent = cart[m.id] || 0; o.closest('.qty').classList.toggle('has', !!cart[m.id]); }
   });
 
-  const lines = MENU.filter((m) => cart[m.id]);
+  const lines = shown().filter((m) => cart[m.id]);
   $('[data-cart-lines]').innerHTML = lines.map((m) => `
     <div class="line">
       <img src="${m.img}" alt="" width="56" height="60">
-      <div class="line-info"><strong>${m.name}</strong><span>${eur(CONFIG.priceSingle)} p.st.</span></div>
+      <div class="line-info"><strong>${esc(m.name)}</strong><span>${eur(CONFIG.priceSingle)} p.st.</span></div>
       <div class="qty has">
-        <button type="button" data-dec="${m.id}" aria-label="Eén ${m.name} minder">−</button>
+        <button type="button" data-dec="${m.id}" aria-label="Eén ${esc(m.name)} minder">−</button>
         <output>${cart[m.id]}</output>
-        <button type="button" data-inc="${m.id}" aria-label="Eén ${m.name} erbij">+</button>
+        <button type="button" data-inc="${m.id}" aria-label="Eén ${esc(m.name)} erbij">+</button>
       </div>
     </div>`).join('');
 
@@ -134,11 +142,17 @@ function render() {
   if (n > 0 && r !== 0) {
     const extra3 = (r === 2 ? 1 : 2);
     const cost = pricing(n + extra3).subtotal - pricing(n).subtotal;
-    nudge.textContent = `Tip: nog ${extra3} erbij kost maar ${eur(cost)} extra (3 voor €10).`;
+    nudge.textContent = `Tip: nog ${extra3} erbij kost maar ${eur(cost)} extra (3 voor ${eur(CONFIG.priceTrio).replace(',00', '')}).`;
     nudge.hidden = false;
   } else nudge.hidden = true;
 
   $('[data-submit]').textContent = n >= CONFIG.bulkThreshold ? 'Feestbestelling aanvragen' : `Bestelling plaatsen · ${eur(p.total)}`;
+  $('[data-submit]').disabled = !!CONFIG.closed;
+  let cn = $('[data-closed-note]');
+  if (CONFIG.closed) {
+    if (!cn) { cn = document.createElement('p'); cn.className = 'closed-note'; cn.setAttribute('data-closed-note', ''); cn.setAttribute('role', 'alert'); $('[data-form]').prepend(cn); }
+    cn.textContent = CONFIG.closedText || 'We nemen op dit moment geen bestellingen aan.';
+  } else if (cn) cn.remove();
   const bar = $('[data-mobile-bar]');
   bar.hidden = n === 0;
   $('[data-mb-count]').textContent = n === 1 ? '1 cocktail' : `${n} cocktails`;
@@ -169,12 +183,23 @@ const pad = (n) => String(n).padStart(2, '0');
 const toMin = (hhmm) => { const [h, m] = hhmm.split(':').map(Number); return h * 60 + m; };
 function localISO(d) { return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`; }
 
+function hoursOn(d) {           // tijden voor een datum, of null als we dan dicht zijn
+  const day = CONFIG.days && CONFIG.days[(d.getDay() + 6) % 7];
+  if (!day) return { start: CONFIG.slotStart, end: CONFIG.slotEnd };
+  return day.open && day.van && day.tot ? { start: day.van, end: day.tot } : null;
+}
+const fromISO = (iso) => { const [y, m, d] = iso.split('-').map(Number); return new Date(y, m - 1, d); };
 function setupDate() {
   const input = $('input[name="date"]');
   const now = new Date();
-  let first = new Date(now);
+  const first = new Date(now);
   const nowMin = now.getHours() * 60 + now.getMinutes() + CONFIG.leadMinutes;
-  if (nowMin > toMin(CONFIG.slotEnd)) first.setDate(first.getDate() + 1);
+  for (let i = 0; i < 14; i++) {     // eerste dag waarop nog een tijd te kiezen is
+    const h = hoursOn(first);
+    if (h && (i > 0 || nowMin <= toMin(h.end))) break;
+    first.setDate(first.getDate() + 1);
+  }
+  if (input.value && input.value < localISO(first)) input.value = '';
   input.min = localISO(first);
   const max = new Date(now); max.setDate(max.getDate() + 60);
   input.max = localISO(max);
@@ -189,7 +214,9 @@ function fillSlots() {
   const earliest = isToday ? now.getHours() * 60 + now.getMinutes() + CONFIG.leadMinutes : 0;
   const prev = sel.value;
   const opts = [];
-  for (let t = toMin(CONFIG.slotStart); t <= toMin(CONFIG.slotEnd); t += CONFIG.slotMinutes) {
+  const h = date ? hoursOn(fromISO(date)) : null;
+  if (!h) { sel.innerHTML = '<option value="">Gesloten op deze dag</option>'; return; }
+  for (let t = toMin(h.start); t <= toMin(h.end); t += CONFIG.slotMinutes) {
     if (t < earliest) continue;
     const v = `${pad(Math.floor(t / 60))}:${pad(t % 60)}`;
     opts.push(`<option value="${v}">${v}</option>`);
@@ -212,7 +239,9 @@ function niceDate(iso) {
 function validate(f) {
   const errs = [];
   const get = (n) => (f.elements[n].value || '').trim();
+  if (CONFIG.closed) errs.push(CONFIG.closedText || 'We nemen op dit moment geen bestellingen aan.');
   if (!get('date')) errs.push('Kies een datum.');
+  else if (!hoursOn(fromISO(get('date')))) errs.push('Op die dag zijn we gesloten. Kies een andere dag.');
   if (!get('time')) errs.push('Kies een tijd.');
   if (get('name').length < 2) errs.push('Vul je naam in.');
   if (get('phone').replace(/\D/g, '').length < 9) errs.push('Vul een geldig telefoonnummer in.');
@@ -233,7 +262,7 @@ function buildOrder(f) {
   return {
     id: orderId(),
     createdAt: new Date().toISOString(),
-    items: MENU.filter((m) => cart[m.id]).map((m) => ({ id: m.id, name: m.name, qty: cart[m.id] })),
+    items: shown().filter((m) => cart[m.id]).map((m) => ({ id: m.id, name: m.name, qty: cart[m.id] })),
     count: n,
     subtotal: p.subtotal, discount: p.discount, delivery: p.delivery, total: p.total,
     bulk: n >= CONFIG.bulkThreshold,
@@ -349,12 +378,53 @@ $$('input[name="method"]').forEach((r) => r.addEventListener('change', () => {
 $('input[name="date"]').addEventListener('change', fillSlots);
 $('[data-form]').addEventListener('submit', submit);
 
+/* ---------- inhoud uit het beheer (/beheer) ---------- */
+function applyInhoud(d) {
+  const i = d.instellingen || {}, c = d.contact || {}, t = d.tijden;
+  const num = (v, def) => (typeof v === 'number' && isFinite(v) ? v : def);
+  CONFIG.priceSingle = num(i.prijs1, CONFIG.priceSingle);
+  CONFIG.priceTrio = num(i.prijs3, CONFIG.priceTrio);
+  if ('bezorgkosten' in i) CONFIG.deliveryFee = typeof i.bezorgkosten === 'number' ? i.bezorgkosten : null;
+  CONFIG.bulkThreshold = num(i.feestVanaf, CONFIG.bulkThreshold);
+  CONFIG.leadMinutes = num(i.voorbereiding, CONFIG.leadMinutes);
+  CONFIG.slotMinutes = Math.max(15, num(i.tijdvak, CONFIG.slotMinutes));
+  if ('whatsapp' in c) { let w = String(c.whatsapp || '').replace(/\D/g, ''); if (w.startsWith('06')) w = '31' + w.slice(1); CONFIG.whatsapp = w; }
+  if (c.instagram) CONFIG.instagram = String(c.instagram).replace(/^@/, '').replace(/^https?:\/\/(www\.)?instagram\.com\//, '').replace(/\/.*$/, '');
+  if ('email' in c) CONFIG.email = c.email || '';
+  if (t && Array.isArray(t.dagen) && t.dagen.length === 7) CONFIG.days = t.dagen;
+  if (t) { CONFIG.closed = !!t.gesloten; CONFIG.closedText = t.geslotenTekst || ''; }
+  const items = d.menu && d.menu[0] && d.menu[0].items;
+  if (Array.isArray(items)) {
+    const order = items.map((x) => x.id);
+    MENU.forEach((m) => {
+      const x = items.find((y) => y.id === m.id);
+      if (!x) return;
+      if (x.naam) m.name = x.naam;
+      if ('omschrijving' in x) m.desc = x.omschrijving || '';
+      if ('label' in x) m.tag = x.label || '';
+      m.soldOut = !!x.uitverkocht; m.hidden = !!x.verborgen;
+    });
+    MENU.sort((a, b) => (order.indexOf(a.id) + 1 || 99) - (order.indexOf(b.id) + 1 || 99));
+  }
+  for (const k of Object.keys(cart)) { const m = MENU.find((x) => x.id === k); if (!m || m.hidden || m.soldOut) delete cart[k]; }
+  store.set('jt_cart', cart);
+  const short = (n) => eur(n).replace(',00', '');
+  $$('[data-fs-p1]').forEach((e) => { e.textContent = short(CONFIG.priceSingle); });
+  $$('[data-fs-p3]').forEach((e) => { e.textContent = short(CONFIG.priceTrio); });
+  $$('[data-fs-feest]').forEach((e) => { e.textContent = CONFIG.bulkThreshold; });
+  if (c.gebied) $$('[data-fs-gebied]').forEach((e) => { e.textContent = c.gebied; });
+  $$('[data-fs-ig]').forEach((e) => { e.href = `https://www.instagram.com/${CONFIG.instagram}/`; e.textContent = `@${CONFIG.instagram} op Instagram`; });
+  renderMenu(); setupDate(); render();
+}
+document.addEventListener('fs:inhoud', (e) => applyInhoud(e.detail || {}));
+
 (function init() {
   renderMenu();
   setupDate();
   const c = store.get('jt_customer', null);
   if (c) { const f = $('[data-form]'); f.elements.name.value = c.name || ''; f.elements.phone.value = c.phone || ''; f.elements.email.value = c.email || ''; }
   render();
+  if (window.FS_INHOUD) applyInhoud(window.FS_INHOUD);
 })();
 
 /* ---------- intro ---------- */

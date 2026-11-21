@@ -187,6 +187,12 @@ section { padding: 72px 16px; }
 .footer { text-align: center; padding: 48px 16px 64px; background: var(--butter); color: var(--ink-soft); }
 .footer img { margin: 0 auto 10px; border-radius: 50%; }
 .footer p { margin: 4px 0; }
+.footer .footer-beheer { margin-top: 18px; font-size: 13px; }
+.footer .footer-beheer a { color: inherit; opacity: .7; padding: 8px 10px; display: inline-block; }
+.footer .footer-beheer a:hover, .footer .footer-beheer a:focus-visible { opacity: 1; }
+.card.soldout .card-img img { filter: grayscale(.85); opacity: .7; }
+.card .soldout-tag { font-weight: 800; color: var(--ink-soft); }
+.closed-note { margin: 0 0 12px; padding: 12px 14px; border-radius: 14px; background: #FFE3E0; color: #8A1C14; font-weight: 700; }
 .nix { font-size: .9rem; margin-top: 12px !important; }
 
 /* ---------- drawer ---------- */

@@ -79,14 +79,14 @@
         <div class="hero-copy">
           <p class="kicker">☀️ Cocktails to go</p>
           <h1>(Huis)feestje?<br><span>Bestel je cocktails!</span></h1>
-          <p class="lead">Vers gemixt, in een handige 200 ml pouch. Ophalen of laten bezorgen in Rotterdam en omgeving.</p>
+          <p class="lead">Vers gemixt, in een handige 200 ml pouch. Ophalen of laten bezorgen in <span data-fs-gebied>Rotterdam en omgeving</span>.</p>
           <div class="deal-row">
-            <div class="deal"><strong>€4,50</strong><span>voor 1</span></div>
-            <div class="deal deal-hot"><strong>€10</strong><span>voor 3</span></div>
+            <div class="deal"><strong data-fs-p1>€4,50</strong><span>voor 1</span></div>
+            <div class="deal deal-hot"><strong data-fs-p3>€10</strong><span>voor 3</span></div>
           </div>
           <div class="hero-cta">
             <a class="btn btn-primary" href="#menu">Kies je cocktails</a>
-            <a class="btn btn-ghost" href="#feest">20+ voor een feest?</a>
+            <a class="btn btn-ghost" href="#feest"><span><span data-fs-feest>20</span>+ voor een feest?</span></a>
           </div>
         </div>
         <div class="hero-art">
@@ -98,7 +98,7 @@
     <section id="menu" class="menu" aria-labelledby="menu-title">
       <div class="section-head">
         <h2 id="menu-title">Het menu</h2>
-        <p>Mix en match zoals je wilt. Elke 3 cocktails betaal je €10, de korting rekenen we automatisch.</p>
+        <p>Mix en match zoals je wilt. Elke 3 cocktails betaal je <span data-fs-p3>€10</span>, de korting rekenen we automatisch.</p>
       </div>
       <div class="menu-grid" data-menu></div>
     </section>
@@ -111,8 +111,8 @@
         <div>
           <h2 id="how-title">Zo werkt het</h2>
           <ol class="steps">
-            <li><span class="step-n">1</span><div><strong>Kies je cocktails</strong><p>Stel je mix samen. Bij 3 stuks betaal je €10.</p></div></li>
-            <li><span class="step-n">2</span><div><strong>Ophalen of bezorgen</strong><p>Kies een dag en tijd. We bezorgen in Rotterdam en omgeving.</p></div></li>
+            <li><span class="step-n">1</span><div><strong>Kies je cocktails</strong><p>Stel je mix samen. Bij 3 stuks betaal je <span data-fs-p3>€10</span>.</p></div></li>
+            <li><span class="step-n">2</span><div><strong>Ophalen of bezorgen</strong><p>Kies een dag en tijd. We bezorgen in <span data-fs-gebied>Rotterdam en omgeving</span>.</p></div></li>
             <li><span class="step-n">3</span><div><strong>We bevestigen</strong><p>Je krijgt een bevestiging met het betaalverzoek.</p></div></li>
             <li><span class="step-n">4</span><div><strong>Proost! 🥂</strong><p>Goed koud bewaren en schudden voor gebruik.</p></div></li>
           </ol>
@@ -123,7 +123,7 @@
     <section id="feest" class="party" aria-labelledby="party-title">
       <div class="party-card">
         <p class="kicker">🪩 Ook voor feestjes</p>
-        <h2 id="party-title">20+ cocktails? Prijs bespreekbaar!</h2>
+        <h2 id="party-title"><span data-fs-feest>20</span>+ cocktails? Prijs bespreekbaar!</h2>
         <p>Verjaardag, borrel, vrijgezellenfeest of bedrijfsuitje: vraag een prijs op maat aan. We denken mee over aantallen en smaken.</p>
         <button class="btn btn-primary" type="button" data-party>Vraag een feestprijs aan</button>
       </div>
@@ -133,9 +133,10 @@
 
   <footer class="footer">
     <img src="/img/logo.webp" alt="" width="64" height="64">
-    <p><strong>Juicy Time</strong> · Cocktails to go · Rotterdam en omgeving</p>
-    <p><a href="https://www.instagram.com/jjuicytime/" target="_blank" rel="noopener">@jjuicytime op Instagram</a></p>
+    <p><strong>Juicy Time</strong> · Cocktails to go · <span data-fs-gebied>Rotterdam en omgeving</span></p>
+    <p><a href="https://www.instagram.com/jjuicytime/" target="_blank" rel="noopener" data-fs-ig>@jjuicytime op Instagram</a></p>
     <p class="nix">🔞 Geen 18, geen alcohol. Bij ophalen en bezorgen vragen we om je ID.</p>
+    <p class="footer-beheer"><a href="/beheer/">Beheer</a></p>
   </footer>
 
   <!-- Bestelling (zijpaneel) -->
@@ -151,10 +152,10 @@
 
       <div class="totals" data-totals hidden>
         <div class="row"><span>Cocktails</span><span data-t-count>0</span></div>
-        <div class="row muted" data-t-deal-row hidden><span>Korting 3 voor €10</span><span data-t-deal>-€0,00</span></div>
+        <div class="row muted" data-t-deal-row hidden><span>Korting 3 voor <span data-fs-p3>€10</span></span><span data-t-deal>-€0,00</span></div>
         <div class="row" data-t-delivery-row hidden><span>Bezorging</span><span data-t-delivery>in overleg</span></div>
         <div class="row total"><span>Totaal</span><span data-t-total>€0,00</span></div>
-        <p class="bulk-note" data-bulk-note hidden>🎉 20+ cocktails: we nemen contact op met een prijs op maat. Het totaal hierboven is de standaardprijs.</p>
+        <p class="bulk-note" data-bulk-note hidden>🎉 <span data-fs-feest>20</span>+ cocktails: we nemen contact op met een prijs op maat. Het totaal hierboven is de standaardprijs.</p>
         <p class="nudge" data-nudge hidden></p>
       </div>
 
@@ -234,6 +235,8 @@
     </button>
   </div>
 
+  <script>window.FS_SITE={slug:'juicytime',melding:{achtergrond:'#E8433A',kleur:'#FFF4C2',font:'Nunito, system-ui, sans-serif'}};</script>
+  <script src="/fs-inhoud.js?v=1" defer></script>
   <script src="/app.js" defer></script>
 </body>
 </html>

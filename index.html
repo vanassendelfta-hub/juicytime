@@ -15,9 +15,8 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Gochi+Hand&family=Londrina+Solid:wght@400;900&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
   <script>
-    /* Intro alleen bij binnenkomst (één keer per bezoek). ?intro=1 toont hem altijd. */
-    (function(){var s=false;try{s=sessionStorage.getItem('jt_intro')==='1';}catch(e){}
-    if(!s||/[?&]intro=1/.test(location.search))document.documentElement.classList.add('intro-on');})();
+    /* Intro bij elk bezoek en elke keer dat de pagina opnieuw wordt geladen. */
+    document.documentElement.classList.add('intro-on');
   </script>
   <link rel="preload" as="image" href="/img/logo.webp">
   <link rel="stylesheet" href="/styles.css">

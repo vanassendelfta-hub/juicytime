@@ -385,7 +385,6 @@ $('[data-form]').addEventListener('submit', submit);
   function leave(target) {
     if (gone) return; gone = true;
     finish();
-    try { sessionStorage.setItem('jt_intro', '1'); } catch (e) { /* ignore */ }
     if (reduce) { remove(target); root.classList.remove('intro-leaving'); return; }
     root.classList.add('intro-leaving');
     setTimeout(() => remove(target), 820);          // scherm is nu helemaal bedekt
